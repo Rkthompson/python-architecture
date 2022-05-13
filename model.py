@@ -10,7 +10,7 @@ class OrderLine:
     qty: int
 
 
-# Batch
+# Batch class
 class Batch:
     def __init__(
         self, ref: str, sku: str, qty: int, eta: Optional[date]
@@ -21,4 +21,13 @@ class Batch:
         self.available_quantity = qty
 
     def allocate(self, line: OrderLine):
-        self.available_quantity -= line.qty
+        if(self.check_in_stock(line)):
+            self.available_quantity -= line.qty
+        else:
+            print('Out of stock')
+
+    def check_in_stock(self, line):
+        if(self.available_quantity >= line.qty):
+            return True
+        else:
+            return False

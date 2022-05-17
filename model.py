@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Optional
 from datetime import date
 
+
 # Order class
 @dataclass(frozen=True)
 class OrderLine:

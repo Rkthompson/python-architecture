@@ -36,6 +36,14 @@ def test_cannot_allocate_if_skus_do_not_match():
     assert batch.can_allocate(different_sku_line) is False
 
 
+# test if batches can be double processed
+def test_allocation_is_idempotent():
+    batch, line = make_batch_and_line("ANGUALR-DESK", 20, 2)
+    batch.allocate(line)
+    batch.allocate(line)
+    assert batch.available_quantity == 18
+
+
 '''
 def test_allocating_to_a_batch_reduces_the_available_quantity():
     # Create a batch with a qty of 20

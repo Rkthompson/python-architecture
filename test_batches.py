@@ -2,6 +2,41 @@ from datetime import date
 from model import Batch, OrderLine
 
 
+# refactor to reduce the duplication of code creating the same test batchs
+# and orderlines
+def make_batch_and_line(sku, batch_qty, line_qty):
+    return(
+        Batch("batch-001", sku, batch_qty, eta=date.today()),
+        OrderLine("order-123", sku, line_qty)
+    )
+
+
+# test if can allocate requested qty less than available qty
+def test_can_allocate_if_available_greaer_than_required():
+    large_batch, small_line = make_batch_and_line("ELEGANT-LAMP", 20, 2)
+    assert large_batch.can_allocate(small_line)
+
+
+# test if cannot allocate requested qty greater than available qty
+def test_cannot_allocate_if_available_smaller_than_required():
+    small_batch, large_line = make_batch_and_line("ELEGANT-LAMP", 2, 20)
+    assert small_batch.can_allocate(large_line) is False
+
+
+# test if can allocate rquested qty equals available qty
+def test_can_allocate_if_available_smaller_than_required():
+    batch, line = make_batch_and_line("ELEGENT-LAMP", 2, 2)
+    assert batch.can_allocate(line)
+
+
+# test if cannot allocate if sku's don't match
+def test_cannot_allocate_if_skus_do_not_match():
+    batch = Batch("batch-001", "UNCOMFORTABLE_CHAIR", 100, eta=None)
+    different_sku_line = OrderLine("order-123", "EXPENSIVE-TOASTER", 10)
+    assert batch.can_allocate(different_sku_line) is False
+
+
+'''
 def test_allocating_to_a_batch_reduces_the_available_quantity():
     # Create a batch with a qty of 20
     batch = Batch("batch-001", "SMALL-TABLE", qty=20, eta=date.today())
@@ -23,7 +58,7 @@ def test_if_stock_is_avalable_to_allocate():
 
     # assert that the batch hasn't processed
     assert batch.available_quantity == 20
-
+'''
 
 '''
 def test_if_orderline_can_be_duplicated():

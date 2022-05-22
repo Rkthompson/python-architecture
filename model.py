@@ -1,6 +1,15 @@
+from __future__ import annotations
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, List
 from datetime import date
+
+
+def allocate(line: OrderLine, batches: List[Batch]) -> str:
+    batch = next(
+        b for b in sorted(batches) if b.can_allocate(line)
+    )
+    batch.allocate(line)
+    return batch.reference
 
 
 # Order class
@@ -46,21 +55,12 @@ class Batch:
             return False
         return other.reference == self.reference
 
+    def __gt__(self, other):
+        if self.eta is None:
+            return False
+        if other.eta is None:
+            return True
+        return self.eta > other.eta
+
     def __hash__(self):
         return hash(self.reference)
-
-
-'''
-    def allocate(self, line: OrderLine):
-        if(self.check_in_stock(line)):
-            self.available_quantity -= line.qty
-        else:
-            print('Out of stock')
-
-
-    def check_in_stock(self, line):
-        if(self.available_quantity >= line.qty):
-            return True
-        else:
-            return False
-'''

@@ -47,4 +47,4 @@ def test_raises_out_of_stock_exception_if_cannot_allocate():
     allocate(OrderLine('order1', 'SMALL-FORK', 10), [batch])
 
     with pytest.raises(OutOfStock, match='SMALL-FORK'):
-        allocate(OrderLine('order2', 'SMALL-FORK', 1)[batch])
+        allocate(OrderLine('order2', 'SMALL-FORK', 1), [batch])

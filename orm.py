@@ -34,7 +34,7 @@ allocations = Table(
 )
 
 
-def start_mapper():
+def start_mappers():
     lines_mapper = mapper(model.OrderLine, order_lines)
     mapper(
         model.Batch,

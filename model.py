@@ -16,7 +16,8 @@ def allocate(line: OrderLine, batches: List[Batch]) -> str:
 
 
 # Order class
-@dataclass(frozen=True)
+# @dataclass(frozen=True)
+@dataclass(unsafe_hash=True)
 class OrderLine:
     orderid: str
     sku: str

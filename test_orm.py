@@ -1,7 +1,7 @@
 import model
 from datetime import date
 
-"""
+
 def test_orderline_mapper_can_load_lines(session):
     session.execute(
         "INSERT INTO order_lines (orderid, sku, qty) VALUES "
@@ -15,8 +15,7 @@ def test_orderline_mapper_can_load_lines(session):
         model.OrderLine("order1", "BLUE-LIPSTICK", 14),
     ]
 
-    assert session.query(model.OrderLine).all == expected
-"""
+    assert session.query(model.OrderLine).all() == expected
 
 
 def test_orderline_mapper_can_save_lines(session):

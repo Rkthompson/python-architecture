@@ -19,14 +19,14 @@ def sync(source, dest):
         if action == "MOVE":
             shutil.move(*paths)
         if action == "DELETE":
-            os.remove(*paths)
+            os.remove(paths[0])
 
 
 BLOCKSIZE = 65536
 
 
 def hash_file(path):
-    hasher = hashlib.shal()
+    hasher = hashlib.sha1()
     with path.open("rb") as file:
         buf = file.read(BLOCKSIZE)
         while buf:
@@ -53,9 +53,9 @@ def determine_actions(source_hashes, dest_hashes, source_folder, dest_folder):
             yield "COPY", sourcepath, destpath
 
         elif dest_hashes[sha] != filename:
-            oldestpath = Path(dest_folder) / dest_hashes[sha]
+            olddestpath = Path(dest_folder) / dest_hashes[sha]
             newdestpath = Path(dest_folder) / filename
-            yield "MOVE", oldestpath, newdestpath
+            yield "MOVE", olddestpath, newdestpath
 
     for sha, filename in dest_hashes.items():
         if sha not in source_hashes:

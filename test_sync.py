@@ -45,7 +45,7 @@ class TestE2E:
 
         finally:
             shutil.rmtree(source)
-            shutil.rmtree(source)
+            shutil.rmtree(dest)
 
 
 def test_when_a_file_exists_in_the_source_but_not_the_destination():
